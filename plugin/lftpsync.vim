@@ -35,4 +35,5 @@ fun! s:lftp_sync_buffers()
   cal system( "lftp -f " . script )
 endf
 
-
+com! LftpSyncBuffers  :cal s:lftp_sync_buffers()
+cabbr ftpsb  LftpSyncBuffers
