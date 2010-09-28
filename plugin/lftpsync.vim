@@ -47,6 +47,21 @@ fun! s:lftp_sync_buffers()
   cal delete( script )
 endf
 
+fun! s:lftp_sync_current()
+  cal s:read_config()
+  let buffers = [ bufname('%') ]
+  let script = s:gen_script_buffers(buffers)
+  exec '!lftp -f ' . script
+  cal delete( script )
+endf
+
 com! LftpGenConfig    :cal s:gen_config()
 com! LftpSyncBuffers  :cal s:lftp_sync_buffers()
+com! LftpSyncCurrent  :cal s:lftp_sync_current()
 cabbr ftpsb  LftpSyncBuffers
+
+
+if ! exists( 'g:lftp_sync_no_default_mapping' )
+  nnoremap <leader>fu   :LftpSyncBuffers<CR>
+  nnoremap <leader>fc   :LftpSyncCurrent<CR>
+endif
