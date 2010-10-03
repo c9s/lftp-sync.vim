@@ -43,8 +43,12 @@ fun! s:lftp_sync_buffers()
   cal s:read_config()
   let buffers = s:scan_buffers()
   let script = s:gen_script_buffers(buffers)
+  redraw
+  echomsg "Upload:"
+  echomsg buffers
   exec '!lftp -f ' . script
   cal delete( script )
+  echomsg "Done"
 endf
 
 fun! s:lftp_sync_current()
@@ -55,11 +59,17 @@ fun! s:lftp_sync_current()
   cal delete( script )
 endf
 
+fun! s:lftp_console()
+  source .lftp.vim
+  exec printf('!lftp -u %s,%s %s', g:lftp_user , g:lftp_pass, g:lftp_host )
+endf
+
+
+com! LftpConsole      :cal s:lftp_console()
 com! LftpGenConfig    :cal s:gen_config()
 com! LftpSyncBuffers  :cal s:lftp_sync_buffers()
 com! LftpSyncCurrent  :cal s:lftp_sync_current()
 cabbr ftpsb  LftpSyncBuffers
-
 
 if ! exists( 'g:lftp_sync_no_default_mapping' )
   nnoremap <leader>fu   :LftpSyncBuffers<CR>
