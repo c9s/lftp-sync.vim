@@ -74,4 +74,5 @@ cabbr ftpsb  LftpSyncBuffers
 if ! exists( 'g:lftp_sync_no_default_mapping' )
   nnoremap <leader>fu   :LftpSyncBuffers<CR>
   nnoremap <leader>fc   :LftpSyncCurrent<CR>
+  nnoremap <leader>ff   :LftpConsole<CR>
 endif
