@@ -9,3 +9,5 @@ sync buffer (upload) to remote via lftp.
 
 * LftpGenConfig
 * LftpSyncBuffers
+* LftpSyncCurrent
+* LftpConsole
