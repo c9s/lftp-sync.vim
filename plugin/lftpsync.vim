@@ -10,9 +10,14 @@ fun! s:scan_buffers()
 endf
 
 fun! s:gen_script_buffers(buffers)
+  if exists( 'g:lftp_rdir' )
+    let rdir = g:lftp_rdir
+  else
+    let rdir = '.'
+  endif
   let file = tempname()
   let lines = [ ]
-  cal add( lines , printf('open -u %s,%s %s' , g:lftp_user ,g:lftp_pass , g:lftp_host ) )
+  cal add( lines , printf('open -e "cd %s" -u %s,%s %s' , rdir, g:lftp_user ,g:lftp_pass , g:lftp_host ) )
   for f in a:buffers
     cal add( lines , printf('put %s -o %s', f , f) )
   endfor
@@ -25,10 +30,12 @@ fun! s:gen_config()
   let user = input( "User:" )
   let pass = input( "Pass:" )
   let host = input( "Host:" )
+  let rdir = input( "Remote dir:" )
   let lines = []
   cal add(lines , printf( "let g:lftp_user = '%s' " , user ) )
   cal add(lines , printf( "let g:lftp_pass = '%s' " , pass ) )
   cal add(lines , printf( "let g:lftp_host = '%s' " , host ) )
+  cal add(lines , printf( "let g:lftp_rdir = '%s' " , rdir ) )
   cal writefile( lines , ".lftp.vim" )
 endf
 
